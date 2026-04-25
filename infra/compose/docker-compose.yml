@@ -1,0 +1,112 @@
+name: foundry
+
+x-python-env: &python-env
+  DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://foundry:foundry@postgres:5432/foundry}
+  DATABASE_URL_SYNC: ${DATABASE_URL_SYNC:-postgresql+psycopg://foundry:foundry@postgres:5432/foundry}
+  REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+  FOUNDRY_ENV: ${FOUNDRY_ENV:-development}
+  FOUNDRY_LOG_LEVEL: ${FOUNDRY_LOG_LEVEL:-INFO}
+  FOUNDRY_SECRET_KEY: ${FOUNDRY_SECRET_KEY:-dev-secret-change-me}
+  FOUNDRY_REPOS_DIR: ${FOUNDRY_REPOS_DIR:-/var/lib/foundry/repos}
+  FOUNDRY_API_CORS_ORIGINS: ${FOUNDRY_API_CORS_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
+  FOUNDRY_STALE_DAYS_WARN: ${FOUNDRY_STALE_DAYS_WARN:-14}
+  FOUNDRY_STALE_DAYS_CRITICAL: ${FOUNDRY_STALE_DAYS_CRITICAL:-45}
+  PYTHONUNBUFFERED: "1"
+  PYTHONDONTWRITEBYTECODE: "1"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-foundry}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-foundry}
+      POSTGRES_DB: ${POSTGRES_DB:-foundry}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - foundry_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-foundry} -d ${POSTGRES_DB:-foundry}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - foundry_redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ../..
+      dockerfile: infra/docker/api.Dockerfile
+    restart: unless-stopped
+    environment:
+      <<: *python-env
+      FOUNDRY_API_HOST: "0.0.0.0"
+      FOUNDRY_API_PORT: "8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - foundry_repos:/var/lib/foundry/repos
+      - ../..:/workspace:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: >
+      uvicorn foundry_api.main:app
+      --host 0.0.0.0 --port 8000
+      --reload --reload-dir /workspace/apps/foundry-api
+      --reload-dir /workspace/packages
+
+  worker:
+    build:
+      context: ../..
+      dockerfile: infra/docker/worker.Dockerfile
+    restart: unless-stopped
+    environment:
+      <<: *python-env
+    volumes:
+      - foundry_repos:/var/lib/foundry/repos
+      - ../..:/workspace:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: arq foundry_worker.main.WorkerSettings
+
+  web:
+    build:
+      context: ../..
+      dockerfile: infra/docker/web.Dockerfile
+    restart: unless-stopped
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000}
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../../apps/branchfoundry-web:/app/apps/branchfoundry-web
+      - ../../packages/foundry-ui:/app/packages/foundry-ui
+      - ../../packages/foundry-hooks-sdk/ts:/app/packages/foundry-hooks-sdk/ts
+      - web_node_modules:/app/node_modules
+    depends_on:
+      - api
+    command: pnpm --filter branchfoundry-web dev --host 0.0.0.0
+
+volumes:
+  foundry_pg:
+  foundry_redis:
+  foundry_repos:
+  web_node_modules:

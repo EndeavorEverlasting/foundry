@@ -1,0 +1,91 @@
+[project]
+name = "foundry-workspace"
+version = "0.1.0"
+description = "Foundry platform monorepo (Python workspace root)"
+requires-python = ">=3.11"
+readme = "README.md"
+
+[tool.uv.workspace]
+members = [
+    "apps/foundry-api",
+    "apps/foundry-worker",
+    "packages/foundry-core",
+    "packages/foundry-git",
+    "packages/foundry-analysis",
+    "packages/foundry-hooks-sdk/python",
+    "packages/foundry-policy",
+    "packages/foundry-security",
+]
+
+[tool.uv.sources]
+foundry-core = { workspace = true }
+foundry-git = { workspace = true }
+foundry-analysis = { workspace = true }
+foundry-hooks-sdk = { workspace = true }
+foundry-policy = { workspace = true }
+foundry-security = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "ruff>=0.7.4",
+    "mypy>=1.13.0",
+    "pytest>=8.3.3",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=6.0.0",
+    "httpx>=0.27.2",
+    "types-requests>=2.32.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["apps/*/alembic/versions", "infra/migrations/versions"]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W",
+    "I",
+    "B",
+    "UP",
+    "N",
+    "S",
+    "A",
+    "C4",
+    "PTH",
+    "SIM",
+    "RUF",
+]
+ignore = ["S101", "S105", "S106", "B008", "N818"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/**" = ["S", "PLR2004"]
+"**/alembic/**" = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unused_ignores = true
+warn_return_any = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+plugins = ["pydantic.mypy"]
+exclude = ["build/", "dist/", ".venv/", "apps/.*/alembic/versions/"]
+
+[[tool.mypy.overrides]]
+module = ["git.*", "arq.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+asyncio_mode = "auto"
+testpaths = ["apps", "packages"]
+python_files = ["test_*.py", "*_test.py"]
+addopts = "-ra --strict-markers --tb=short"
+
+[tool.coverage.run]
+branch = true
+source = ["apps", "packages"]
+omit = ["**/tests/**", "**/alembic/**"]

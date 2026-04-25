@@ -1,0 +1,112 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    name: Python (lint + types + tests)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.5.11"
+
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Sync workspace
+        run: uv sync --all-extras --all-packages
+
+      - name: Ruff
+        run: uv run ruff check .
+
+      - name: Mypy (core + analysis + api)
+        run: |
+          uv run mypy packages/foundry-core/src \
+            packages/foundry-analysis/src \
+            packages/foundry-git/src \
+            packages/foundry-hooks-sdk/python/src \
+            apps/foundry-api/src \
+            apps/foundry-worker/src
+
+      - name: Pytest
+        run: uv run pytest -q
+
+  node:
+    name: Node (lint + types + tests)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm -r lint
+
+      - name: Typecheck
+        run: pnpm -r typecheck
+
+      - name: Test
+        run: pnpm -r test --if-present
+
+      - name: Build
+        run: pnpm -r build
+
+  import-boundaries:
+    name: Import boundary check (BranchFoundry vs GuardFoundry)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python scripts/check_import_boundaries.py
+
+  docker-smoke:
+    name: Docker build smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build api image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/api.Dockerfile
+          push: false
+          tags: foundry-api:ci
+      - name: Build worker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/worker.Dockerfile
+          push: false
+          tags: foundry-worker:ci
+      - name: Build web image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/web.Dockerfile
+          push: false
+          tags: branchfoundry-web:ci

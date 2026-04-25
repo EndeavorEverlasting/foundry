@@ -1,0 +1,17 @@
+[project]
+name = "foundry-git"
+version = "0.1.0"
+description = "Foundry Git ingestion: GitBackend interface + GitPython implementation"
+requires-python = ">=3.11"
+dependencies = [
+    "gitpython>=3.1.43",
+    "pydantic>=2.9.0",
+    "foundry-core",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/foundry_git"]

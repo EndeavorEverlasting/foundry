@@ -1,0 +1,14 @@
+{
+  "name": "guardfoundry-web",
+  "version": "0.0.1",
+  "private": true,
+  "description": "GuardFoundry web placeholder (not built out in v1)",
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'GuardFoundry web is a placeholder in v1.' && exit 0",
+    "build": "echo 'GuardFoundry web is a placeholder in v1.' && exit 0",
+    "typecheck": "echo 'no-op'",
+    "lint": "echo 'no-op'",
+    "test": "echo 'no-op'"
+  }
+}

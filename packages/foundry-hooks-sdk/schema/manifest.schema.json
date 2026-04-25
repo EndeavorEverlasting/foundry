@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://foundry.dev/schemas/manifest.schema.json",
+  "title": "FoundryManifest",
+  "description": "Declarative manifest that host apps ship (as foundry.manifest.json) to improve Foundry's capability inference and security awareness.",
+  "type": "object",
+  "required": ["app", "features"],
+  "additionalProperties": false,
+  "properties": {
+    "app": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "description": "Human-friendly app name (e.g. 'AxTask')."
+    },
+    "version": {
+      "type": "string",
+      "default": "0.1",
+      "description": "Manifest spec version (not the app version)."
+    },
+    "features": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/feature" }
+    },
+    "security": { "$ref": "#/$defs/security" }
+  },
+  "$defs": {
+    "feature": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,79}$",
+          "description": "Stable machine-friendly identifier."
+        },
+        "description": { "type": "string" },
+        "paths": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Glob patterns describing code paths owned by this feature."
+        },
+        "signals": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Runtime domain events this feature may emit."
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sensitiveRoutes": { "type": "array", "items": { "type": "string" } },
+        "sensitiveStores": { "type": "array", "items": { "type": "string" } },
+        "privilegedActions": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
