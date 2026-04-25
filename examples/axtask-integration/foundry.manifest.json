@@ -1,0 +1,83 @@
+{
+  "app": "AxTask",
+  "version": "0.1",
+  "features": [
+    {
+      "name": "task-creation",
+      "description": "Create, edit, and classify tasks; classification confirmation flow.",
+      "paths": [
+        "client/src/pages/tasks/**",
+        "client/src/components/tasks/**",
+        "client/src/features/tasks/**",
+        "server/classification-*.ts",
+        "server/routes/tasks*.ts",
+        "server/services/tasks/**"
+      ],
+      "signals": ["task.created", "task.updated", "task.classified"]
+    },
+    {
+      "name": "feedback-system",
+      "description": "Collect, surface, and resolve user feedback.",
+      "paths": [
+        "client/src/pages/feedback/**",
+        "client/src/components/feedback/**",
+        "server/routes/feedback*.ts",
+        "server/services/feedback/**"
+      ],
+      "signals": ["feedback.submitted", "feedback.triaged"]
+    },
+    {
+      "name": "adherence-tracking",
+      "description": "Track whether users follow through on scheduled/checklisted tasks.",
+      "paths": [
+        "client/src/pages/adherence/**",
+        "client/src/features/adherence/**",
+        "server/adherence-*.ts",
+        "server/services/adherence/**",
+        "server/engines/adherence/**"
+      ],
+      "signals": ["adherence.measured", "adherence.missed"]
+    },
+    {
+      "name": "reward-engine",
+      "description": "Points, streaks, and incentives tied to adherence.",
+      "paths": [
+        "client/src/pages/rewards/**",
+        "client/src/features/rewards/**",
+        "client/src/components/rewards/**",
+        "server/services/rewards/**",
+        "server/engines/reward*.ts"
+      ],
+      "signals": ["reward.granted", "reward.revoked", "streak.advanced"]
+    },
+    {
+      "name": "account-management",
+      "description": "Auth, profile, TOTP, providers, backup/import.",
+      "paths": [
+        "client/src/pages/account/**",
+        "client/src/pages/auth/**",
+        "client/src/features/account/**",
+        "server/auth*.ts",
+        "server/account-*.ts",
+        "server/middleware/auth*.ts"
+      ],
+      "signals": ["account.login", "account.logout", "account.totp_enrolled"]
+    }
+  ],
+  "security": {
+    "sensitiveRoutes": ["/api/auth", "/api/account", "/api/admin"],
+    "sensitiveStores": ["users", "userTokens", "sessions", "account_backups"],
+    "privilegedActions": [
+      "account.backup.export",
+      "account.backup.import",
+      "admin.user.override"
+    ]
+  },
+  "release": {
+    "routeInventoryFile": "server/routes-inventory.contract.test.ts",
+    "envTemplateFile": ".env.example",
+    "schemaGlobs": ["shared/schema/**/*.ts"],
+    "migrationGlobs": ["migrations/[0-9][0-9][0-9][0-9]_*.sql"],
+    "releaseDocGlobs": ["docs/releases/*.md"]
+  }
+}
