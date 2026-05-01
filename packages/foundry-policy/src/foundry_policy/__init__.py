@@ -10,6 +10,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol
 
+from foundry_policy.branch_naming import (
+    BranchNameResult,
+    build_branch_name,
+    slugify_context,
+    validate_branch_name,
+)
+
 
 @dataclass
 class PolicyContext:
@@ -43,8 +50,12 @@ class NoOpPolicyEngine:
 
 
 __all__ = [
+    "BranchNameResult",
     "NoOpPolicyEngine",
     "PolicyContext",
     "PolicyEvaluator",
     "PolicyOutcome",
+    "build_branch_name",
+    "slugify_context",
+    "validate_branch_name",
 ]
