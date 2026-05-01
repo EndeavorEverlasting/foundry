@@ -21,6 +21,8 @@ const KIND_LABELS: Record<ActionKind, { label: string; description: string }> = 
   needs_rebase: { label: "Needs rebase", description: "Branches behind the default." },
   at_risk: { label: "At risk", description: "Stale or orphaned branches with real work." },
   failing_checks: { label: "Failing checks", description: "CI is red on the PR." },
+  branch_policy_violation: { label: "Policy violation", description: "Branch name does not follow naming conventions." },
+  manual_review: { label: "Manual review", description: "High-risk changes require human review before merge." },
 };
 
 const ORDER: ActionKind[] = [
@@ -29,6 +31,8 @@ const ORDER: ActionKind[] = [
   "needs_rebase",
   "failing_checks",
   "at_risk",
+  "branch_policy_violation",
+  "manual_review",
 ];
 
 export default function Actions() {

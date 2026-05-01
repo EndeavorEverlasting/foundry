@@ -85,7 +85,9 @@ def _build_evidence(facts: BranchFacts) -> EvidenceBundle:
         module_matches=sorted(
             {path for m in facts.capability_matches for path in m.matched_files}
         )[:200],
-        manifest_features=[m.feature for m in facts.capability_matches],
+        manifest_features=sorted(
+            {m.feature for m in facts.capability_matches}
+        ),
         tests_touched=facts.tests_touched[:50],
     )
     tier3 = Tier3Evidence(

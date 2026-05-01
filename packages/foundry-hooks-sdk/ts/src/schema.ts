@@ -15,6 +15,7 @@ export const MANIFEST_SCHEMA = {
     },
     security: { $ref: "#/$defs/security" },
     release: { $ref: "#/$defs/release" },
+    techStacks: { $ref: "#/$defs/techStacks" },
   },
   $defs: {
     feature: {
@@ -24,29 +25,33 @@ export const MANIFEST_SCHEMA = {
       properties: {
         name: { type: "string", pattern: "^[a-z][a-z0-9-]{1,79}$" },
         description: { type: "string" },
-        paths: { type: "array", items: { type: "string" } },
-        signals: { type: "array", items: { type: "string" } },
+        paths: { type: "array", items: { type: "string", minLength: 1 } },
+        signals: { type: "array", items: { type: "string", minLength: 1 } },
       },
     },
     security: {
       type: "object",
       additionalProperties: false,
       properties: {
-        sensitiveRoutes: { type: "array", items: { type: "string" } },
-        sensitiveStores: { type: "array", items: { type: "string" } },
-        privilegedActions: { type: "array", items: { type: "string" } },
+        sensitiveRoutes: { type: "array", items: { type: "string", minLength: 1 } },
+        sensitiveStores: { type: "array", items: { type: "string", minLength: 1 } },
+        privilegedActions: { type: "array", items: { type: "string", minLength: 1 } },
       },
     },
     release: {
       type: "object",
       additionalProperties: false,
       properties: {
-        routeInventoryFile: { type: "string" },
-        envTemplateFile: { type: "string" },
-        schemaGlobs: { type: "array", items: { type: "string" } },
-        migrationGlobs: { type: "array", items: { type: "string" } },
-        releaseDocGlobs: { type: "array", items: { type: "string" } },
+        routeInventoryFile: { type: "string", minLength: 1 },
+        envTemplateFile: { type: "string", minLength: 1 },
+        schemaGlobs: { type: "array", items: { type: "string", minLength: 1 } },
+        migrationGlobs: { type: "array", items: { type: "string", minLength: 1 } },
+        releaseDocGlobs: { type: "array", items: { type: "string", minLength: 1 } },
       },
+    },
+    techStacks: {
+      type: "array",
+      items: { type: "string", minLength: 1 },
     },
   },
 } as const;

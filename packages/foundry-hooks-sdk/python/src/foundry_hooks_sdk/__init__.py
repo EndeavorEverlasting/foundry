@@ -9,6 +9,7 @@ from foundry_hooks_sdk.loader import (
 from foundry_hooks_sdk.models import (
     FoundryManifest,
     ManifestFeature,
+    ManifestRelease,
     ManifestSecurity,
 )
 from foundry_hooks_sdk.schema import MANIFEST_SCHEMA
@@ -18,6 +19,7 @@ __all__ = [
     "MANIFEST_SCHEMA",
     "ManifestError",
     "ManifestFeature",
+    "ManifestRelease",
     "ManifestSecurity",
     "load_manifest",
     "load_manifest_from_file",

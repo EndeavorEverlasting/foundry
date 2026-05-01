@@ -22,6 +22,8 @@ const READINESS_PILL: Record<ReadinessState, Pill> = {
   at_risk: { label: "At risk", className: "bg-state-danger/15 text-state-danger border-state-danger/30" },
   failing_checks: { label: "Failing checks", className: "bg-state-danger/15 text-state-danger border-state-danger/30" },
   draft: { label: "Draft", className: "bg-white/5 text-fg-tertiary border-white/10" },
+  safe_merge_candidate: { label: "Safe merge", className: "bg-state-success/15 text-state-success border-state-success/30" },
+  manual_review: { label: "Manual review", className: "bg-accent-blue/15 text-accent-blue border-accent-blue/30" },
 };
 
 export interface BranchStatePillProps {

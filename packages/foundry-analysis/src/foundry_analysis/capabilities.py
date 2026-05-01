@@ -41,18 +41,26 @@ def _glob_match(path: str, pattern: str) -> bool:
     pat = _normalize(pattern)
     if fnmatch.fnmatchcase(p, pat):
         return True
-    # Support ** recursive style: translate to multiple fnmatch calls
-    if "**" in pat:
-        simple = pat.replace("**", "*")
-        if fnmatch.fnmatchcase(p, simple):
+    if "**" not in pat:
+        return False
+
+    prefix, suffix = pat.split("**", 1)
+    prefix = prefix.rstrip("/")
+    suffix = suffix.lstrip("/")
+
+    if prefix and not (p == prefix or p.startswith(prefix + "/")):
+        return False
+
+    sub = p[len(prefix) + 1 :] if prefix else p
+
+    if not suffix:
+        return True
+
+    parts = sub.split("/")
+    for i in range(len(parts)):
+        candidate = "/".join(parts[i:])
+        if fnmatch.fnmatchcase(candidate, suffix):
             return True
-        # Also match any depth under the base
-        base = pat.split("**", 1)[0].rstrip("/")
-        if base and p.startswith(base + "/"):
-            tail = pat.split("**", 1)[1].lstrip("/")
-            if not tail:
-                return True
-            return fnmatch.fnmatchcase(p, f"*{tail}")
     return False
 
 

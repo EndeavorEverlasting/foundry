@@ -29,6 +29,7 @@ export interface FoundryManifest {
   features: ManifestFeature[];
   security?: ManifestSecurity;
   release?: ManifestRelease;
+  techStacks?: string[];
 }
 
 export class ManifestValidationError extends Error {

@@ -13,6 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from foundry_core.enums import (
     ActionKind,
     BranchState,
+    ConflictRisk,
     FindingSeverity,
     FindingStatus,
     PullRequestState,
@@ -78,6 +79,7 @@ class BranchOut(ApiBase):
     state: BranchState
     readiness: ReadinessState
     stale_reasons: list[str] = Field(default_factory=list)
+    conflict_risk: str = "none"
     last_author: str | None = None
     last_commit_at: datetime | None = None
     created_at: datetime
@@ -179,6 +181,10 @@ class ActionCenter(BaseModel):
     repository_id: str
     by_kind: dict[ActionKind, list[ActionCard]] = Field(default_factory=dict)
 
+    @property
+    def total_actions(self) -> int:
+        return sum(len(cards) for cards in self.by_kind.values())
+
 
 class DriftEntry(BaseModel):
     branch: BranchOut
@@ -186,12 +192,16 @@ class DriftEntry(BaseModel):
     behind: int
     conflict_risk: str
     readiness: ReadinessState
+    release_score: int = Field(default=0, ge=0, le=100)
 
 
 class DriftPanel(BaseModel):
     repository_id: str
     main_missing: list[DriftEntry]
     behind_main: list[DriftEntry]
+    total_ahead: int = 0
+    total_behind: int = 0
+    risk_summary: dict[str, int] = Field(default_factory=dict)
 
 
 class ScanRunOut(ApiBase):
@@ -254,6 +264,7 @@ class ManifestOut(ApiBase):
     app: str
     version: str
     features: list[ManifestFeature]
+    security: ManifestSecurity | None = None
     release: ManifestRelease | None = None
 
 

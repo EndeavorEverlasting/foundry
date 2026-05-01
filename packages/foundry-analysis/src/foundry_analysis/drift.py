@@ -25,6 +25,17 @@ class ConflictRisk(str, Enum):
     MEDIUM = "medium"
     HIGH = "high"
 
+    @property
+    def score(self) -> int:
+        """Numeric score used by Release Readiness (higher = more risk)."""
+        mapping = {
+            ConflictRisk.NONE: 0,
+            ConflictRisk.LOW: 25,
+            ConflictRisk.MEDIUM: 50,
+            ConflictRisk.HIGH: 75,
+        }
+        return mapping[self]
+
 
 def compute_conflict_risk(
     *, branch_files: set[str], main_files_since_fork: set[str]
@@ -52,3 +63,25 @@ def compute_conflict_risk(
     if ratio >= 0.25 or overlap >= 4:
         return ConflictRisk.MEDIUM
     return ConflictRisk.LOW
+
+
+def compute_release_readiness_score(
+    *,
+    conflict_risk: ConflictRisk,
+    ahead: int,
+    behind: int,
+    checks_passing: bool | None,
+) -> int:
+    """0-100 score where 100 = fully ready for release.
+
+    Penalizes conflict risk, drift behind main, and failing checks.
+    """
+    score = 100
+    score -= conflict_risk.score
+    if behind > 0:
+        score -= min(20, behind * 2)
+    if checks_passing is False:
+        score -= 30
+    elif checks_passing is None and ahead > 0:
+        score -= 10
+    return max(0, min(100, score))

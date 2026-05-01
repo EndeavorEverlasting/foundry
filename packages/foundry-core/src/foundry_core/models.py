@@ -123,6 +123,7 @@ class Branch(SQLModel, table=True):
         sa_column=_json_col(),
     )
     readiness: ReadinessState = Field(default=ReadinessState.NEEDS_REVIEW)
+    conflict_risk: str = Field(default="none", max_length=20)
 
     last_author: str | None = Field(default=None, max_length=320)
     last_commit_at: datetime | None = Field(

@@ -17,14 +17,18 @@ export type ReadinessState =
   | "needs_review"
   | "at_risk"
   | "failing_checks"
-  | "draft";
+  | "draft"
+  | "safe_merge_candidate"
+  | "manual_review";
 
 export type ActionKind =
   | "needs_review"
   | "ready_to_merge"
   | "at_risk"
   | "needs_rebase"
-  | "failing_checks";
+  | "failing_checks"
+  | "branch_policy_violation"
+  | "manual_review";
 
 export type PullRequestState = "open" | "merged" | "closed" | "draft";
 
@@ -65,6 +69,7 @@ export interface Branch {
   state: BranchState;
   readiness: ReadinessState;
   stale_reasons: string[];
+  conflict_risk: "none" | "low" | "medium" | "high";
   last_author: string | null;
   last_commit_at: string | null;
   created_at: string;

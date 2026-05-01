@@ -33,6 +33,8 @@ class ReadinessState(str, Enum):
     AT_RISK = "at_risk"
     FAILING_CHECKS = "failing_checks"
     DRAFT = "draft"
+    SAFE_MERGE_CANDIDATE = "safe_merge_candidate"
+    MANUAL_REVIEW = "manual_review"
 
 
 class ActionKind(str, Enum):
@@ -43,6 +45,8 @@ class ActionKind(str, Enum):
     AT_RISK = "at_risk"
     NEEDS_REBASE = "needs_rebase"
     FAILING_CHECKS = "failing_checks"
+    BRANCH_POLICY_VIOLATION = "branch_policy_violation"
+    MANUAL_REVIEW = "manual_review"
 
 
 class ScanKind(str, Enum):
@@ -92,6 +96,13 @@ class RepoProvider(str, Enum):
     BITBUCKET = "bitbucket"
     AZURE = "azure"
     GENERIC = "generic"
+
+
+class ConflictRisk(str, Enum):
+    NONE = "none"
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
 
 
 class HookEventKind(str, Enum):

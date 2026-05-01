@@ -33,6 +33,7 @@ from foundry_analysis import (
     BranchFacts,
     DeterministicSummaryProvider,
     classify_staleness,
+    compute_conflict_risk,
     compute_readiness,
     match_capabilities,
 )
@@ -105,6 +106,7 @@ async def branch_sync(ctx: dict[str, Any], repo_id: str) -> dict[str, int | str]
                 repo.default_branch = default
 
             refs = repo_svc.list_branches(repo_path)
+            await _ingest_manifest(session, repo.id, repo_path)
             feature_map = await _load_feature_map(session, repo.id)
 
             total_new_commits = 0
@@ -181,6 +183,50 @@ async def _load_feature_map(session: AsyncSession, repo_id: str) -> dict[str, li
         select(Feature).where(Feature.manifest_id.in_(manifest_ids))
     )
     return {f.name: list(f.paths or []) for f in feat_rs.scalars().all()}
+
+
+async def _ingest_manifest(session: AsyncSession, repo_id: str, repo_path: Path) -> None:
+    """Load foundry.manifest.json from disk and persist into HookManifest + Features."""
+    manifest_path = repo_path / "foundry.manifest.json"
+    if not manifest_path.exists():
+        return
+
+    try:
+        from foundry_hooks_sdk import load_manifest_from_file, ManifestError
+        manifest = load_manifest_from_file(manifest_path)
+    except ManifestError:
+        log.warning("manifest.invalid", repo_id=repo_id, path=str(manifest_path))
+        return
+
+    # Remove existing manifests for this repo (v1: one manifest per repo).
+    existing = await session.execute(
+        select(HookManifest).where(HookManifest.repository_id == repo_id)
+    )
+    for old in existing.scalars().all():
+        await session.delete(old)
+    await session.flush()
+
+    row = HookManifest(
+        repository_id=repo_id,
+        app=manifest.app,
+        version=manifest.version,
+        raw=manifest.model_dump(by_alias=True),
+        source_path=str(manifest_path),
+    )
+    session.add(row)
+    await session.flush()
+
+    for f in manifest.features:
+        session.add(
+            Feature(
+                manifest_id=row.id,
+                name=f.name,
+                paths=list(f.paths),
+                signals=list(f.signals),
+                description=f.description,
+            )
+        )
+    log.info("manifest.ingested", repo_id=repo_id, app=manifest.app, features=len(manifest.features))
 
 
 async def _sync_branch(
@@ -324,6 +370,21 @@ async def _sync_branch(
             break
     has_reviewers = any(p.reviewers for p in prs)
 
+    # Conflict risk ---------------------------------------------------------
+    conflict_risk = "none"
+    if merge_base and not ref.is_default:
+        try:
+            main_files = set(
+                repo_svc.files_changed_since(repo_path, merge_base, default_branch)
+            )
+            conflict_risk = compute_conflict_risk(
+                branch_files=set(files_touched),
+                main_files_since_fork=main_files,
+            ).value
+        except Exception:
+            log.warning("conflict_risk.compute_failed", branch=ref.name, repo_id=repo.id)
+    branch.conflict_risk = conflict_risk
+
     # Staleness + readiness ------------------------------------------------
     assessment = classify_staleness(
         last_commit_at=last_commit_at,
@@ -343,6 +404,7 @@ async def _sync_branch(
         is_draft_pr=is_draft_pr,
         checks_passing=checks_passing,
         has_reviewers=has_reviewers,
+        is_stale=assessment.is_stale,
     )
 
     # Capabilities ---------------------------------------------------------
@@ -419,6 +481,10 @@ async def _rewrite_actions(session: AsyncSession, branch: Branch, has_open_pr: b
     if branch.readiness == ReadinessState.NEEDS_REVIEW:
         reason = "Open PR has no reviewers." if has_open_pr else "Branch is ahead of default and has no PR."
         add(ActionKind.NEEDS_REVIEW, reason, priority=5)
+    if branch.readiness == ReadinessState.MANUAL_REVIEW:
+        add(ActionKind.MANUAL_REVIEW, "High-risk changes require human review before merge.", priority=8)
+    if branch.readiness == ReadinessState.SAFE_MERGE_CANDIDATE:
+        add(ActionKind.READY_TO_MERGE, "Documentation-only or low-risk changes; safe to merge.", priority=6)
     if branch.state in (BranchState.STALE, BranchState.ORPHANED):
         add(ActionKind.AT_RISK, "Branch is stale or orphaned.", priority=3)
 

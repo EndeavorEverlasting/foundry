@@ -8,8 +8,13 @@ from foundry_analysis.drift import (
     ConflictRisk,
     DriftResult,
     compute_conflict_risk,
+    compute_release_readiness_score,
 )
-from foundry_analysis.readiness import compute_readiness
+from foundry_analysis.readiness import (
+    check_branch_name_policy,
+    compute_readiness,
+    is_safe_merge_candidate,
+)
 from foundry_analysis.stale import (
     StaleAssessment,
     classify_staleness,
@@ -33,5 +38,6 @@ __all__ = [
     "classify_staleness",
     "compute_conflict_risk",
     "compute_readiness",
+    "compute_release_readiness_score",
     "match_capabilities",
 ]

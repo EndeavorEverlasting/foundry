@@ -36,6 +36,16 @@ class ManifestSecurity(BaseModel):
     privileged_actions: list[str] = Field(default_factory=list, alias="privilegedActions")
 
 
+class ManifestRelease(BaseModel):
+    model_config = ConfigDict(extra="forbid", populate_by_name=True)
+
+    route_inventory_file: str | None = Field(default=None, alias="routeInventoryFile")
+    env_template_file: str | None = Field(default=None, alias="envTemplateFile")
+    schema_globs: list[str] = Field(default_factory=list, alias="schemaGlobs")
+    migration_globs: list[str] = Field(default_factory=list, alias="migrationGlobs")
+    release_doc_globs: list[str] = Field(default_factory=list, alias="releaseDocGlobs")
+
+
 class FoundryManifest(BaseModel):
     model_config = ConfigDict(extra="forbid", populate_by_name=True)
 
@@ -43,6 +53,8 @@ class FoundryManifest(BaseModel):
     version: str = "0.1"
     features: list[ManifestFeature]
     security: ManifestSecurity | None = None
+    release: ManifestRelease | None = None
+    tech_stacks: list[str] = Field(default_factory=list, alias="techStacks")
 
     def feature_path_map(self) -> dict[str, list[str]]:
         return {f.name: list(f.paths) for f in self.features}

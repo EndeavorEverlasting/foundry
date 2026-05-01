@@ -23,7 +23,9 @@
       "minItems": 1,
       "items": { "$ref": "#/$defs/feature" }
     },
-    "security": { "$ref": "#/$defs/security" }
+    "security": { "$ref": "#/$defs/security" },
+    "release": { "$ref": "#/$defs/release" },
+    "techStacks": { "$ref": "#/$defs/techStacks" }
   },
   "$defs": {
     "feature": {
@@ -53,10 +55,26 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "sensitiveRoutes": { "type": "array", "items": { "type": "string" } },
-        "sensitiveStores": { "type": "array", "items": { "type": "string" } },
-        "privilegedActions": { "type": "array", "items": { "type": "string" } }
+        "sensitiveRoutes": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "sensitiveStores": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "privilegedActions": { "type": "array", "items": { "type": "string", "minLength": 1 } }
       }
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "routeInventoryFile": { "type": "string", "minLength": 1 },
+        "envTemplateFile": { "type": "string", "minLength": 1 },
+        "schemaGlobs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "migrationGlobs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "releaseDocGlobs": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "techStacks": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Tech stacks used by the application (e.g. 'python', 'typescript', 'rust')."
     }
   }
 }

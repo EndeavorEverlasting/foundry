@@ -31,6 +31,8 @@ _EMBEDDED: dict[str, object] = {
             "items": {"$ref": "#/$defs/feature"},
         },
         "security": {"$ref": "#/$defs/security"},
+        "release": {"$ref": "#/$defs/release"},
+        "techStacks": {"$ref": "#/$defs/techStacks"},
     },
     "$defs": {
         "feature": {
@@ -43,18 +45,33 @@ _EMBEDDED: dict[str, object] = {
                     "pattern": r"^[a-z][a-z0-9-]{1,79}$",
                 },
                 "description": {"type": "string"},
-                "paths": {"type": "array", "items": {"type": "string"}},
-                "signals": {"type": "array", "items": {"type": "string"}},
+                "paths": {"type": "array", "items": {"type": "string", "minLength": 1}},
+                "signals": {"type": "array", "items": {"type": "string", "minLength": 1}},
             },
         },
         "security": {
             "type": "object",
             "additionalProperties": False,
             "properties": {
-                "sensitiveRoutes": {"type": "array", "items": {"type": "string"}},
-                "sensitiveStores": {"type": "array", "items": {"type": "string"}},
-                "privilegedActions": {"type": "array", "items": {"type": "string"}},
+                "sensitiveRoutes": {"type": "array", "items": {"type": "string", "minLength": 1}},
+                "sensitiveStores": {"type": "array", "items": {"type": "string", "minLength": 1}},
+                "privilegedActions": {"type": "array", "items": {"type": "string", "minLength": 1}},
             },
+        },
+        "release": {
+            "type": "object",
+            "additionalProperties": False,
+            "properties": {
+                "routeInventoryFile": {"type": "string", "minLength": 1},
+                "envTemplateFile": {"type": "string", "minLength": 1},
+                "schemaGlobs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+                "migrationGlobs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+                "releaseDocGlobs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+            },
+        },
+        "techStacks": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1},
         },
     },
 }
