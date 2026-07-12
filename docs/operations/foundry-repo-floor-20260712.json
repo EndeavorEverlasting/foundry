@@ -1,0 +1,153 @@
+{
+  "$schema": null,
+  "schema_version": 1,
+  "kind": "foundry.repo-floor-snapshot",
+  "captured_at": "2026-07-12T17:28:00Z",
+  "repository": {
+    "owner": "EndeavorEverlasting",
+    "name": "foundry",
+    "provider": "github"
+  },
+  "default_branch": {
+    "name": "feature/2026-04-25-foundry-release-control-plane",
+    "head_sha": "a1f506f3e6fe5d66ca83c722a6484cb735936fd0",
+    "is_github_default": true,
+    "tracks_remote": "origin/feature/2026-04-25-foundry-release-control-plane"
+  },
+  "main_branch": {
+    "exists": false,
+    "note": "No refs/heads/main or refs/remotes/origin/main exists. CI triggers on push to main but main does not exist."
+  },
+  "branches": [
+    {
+      "name": "feature/2026-04-25-foundry-release-control-plane",
+      "sha": "a1f506f3e6fe5d66ca83c722a6484cb735936fd0",
+      "role": "canonical",
+      "is_default": true,
+      "commit_count": 6,
+      "tracking": "origin/feature/2026-04-25-foundry-release-control-plane"
+    },
+    {
+      "name": "docs/2026-05-01-branch-naming-standard",
+      "sha": "528ef732ebd82be79defa4d8fbaba7f3b0d4e974",
+      "role": "pr",
+      "pr_number": 1,
+      "commit_count": 4,
+      "base_branch": "feature/2026-04-25-foundry-release-control-plane",
+      "diverges_at": "1111a72"
+    },
+    {
+      "name": "docs/2026-05-26-extraction-forensics-gate",
+      "sha": "1333435324c9094309f6183a0c62c0017dbdf869",
+      "role": "pr",
+      "pr_number": 2,
+      "commit_count": 3,
+      "base_branch": "feature/2026-04-25-foundry-release-control-plane",
+      "diverges_at": "a1f506f"
+    },
+    {
+      "name": "docs/sysadminsuite-mainline-promotion-insights-2026-05-26",
+      "sha": "7805831a00c0ab295b1c6f2882d88907d00ed462",
+      "role": "pr",
+      "pr_number": 3,
+      "commit_count": 1,
+      "base_branch": "feature/2026-04-25-foundry-release-control-plane",
+      "diverges_at": "a1f506f"
+    }
+  ],
+  "commit_history": [
+    {"sha": "a1f506f", "message": "feat: integration tests and NodeWeaver governance classification", "date": "2026-04-25"},
+    {"sha": "1111a72", "message": "feat(hooks): add release policy manifest capabilities", "date": "2026-04-25"},
+    {"sha": "e6ac010", "message": "feat(web): add release readiness route and client wiring", "date": "2026-04-25"},
+    {"sha": "950fc30", "message": "docs(release): add divergence workflow guidance", "date": "2026-04-25"},
+    {"sha": "474f3e6", "message": "feat(api): add release readiness control plane and deploy action planning", "date": "2026-04-25"},
+    {"sha": "3e40cb9", "message": "chore(foundry): bootstrap local repository snapshot", "date": "2026-04-25"}
+  ],
+  "pull_requests": [
+    {
+      "number": 1,
+      "title": "docs: enforce dated branch naming standard",
+      "state": "OPEN",
+      "mergeable": "MERGEABLE",
+      "head_branch": "docs/2026-05-01-branch-naming-standard",
+      "head_sha": "528ef732ebd82be79defa4d8fbaba7f3b0d4e974",
+      "base_branch": "feature/2026-04-25-foundry-release-control-plane",
+      "commits": 4,
+      "created_at": "2026-05-01T21:53:40Z",
+      "classification": "current",
+      "content_type": "documentation",
+      "ci_status": "failure",
+      "ci_failure_reason": "Node toolchain (pnpm setup), not code"
+    },
+    {
+      "number": 2,
+      "title": "Docs: Add extraction forensics gate doctrine",
+      "state": "OPEN",
+      "mergeable": "MERGEABLE",
+      "head_branch": "docs/2026-05-26-extraction-forensics-gate",
+      "head_sha": "1333435324c9094309f6183a0c62c0017dbdf869",
+      "base_branch": "feature/2026-04-25-foundry-release-control-plane",
+      "commits": 3,
+      "created_at": "2026-05-26T05:27:44Z",
+      "classification": "current",
+      "content_type": "documentation",
+      "ci_status": "failure",
+      "ci_failure_reason": "Node toolchain (pnpm setup), not code"
+    },
+    {
+      "number": 3,
+      "title": "Add SysAdminSuite mainline promotion insights",
+      "state": "OPEN",
+      "mergeable": "MERGEABLE",
+      "head_branch": "docs/sysadminsuite-mainline-promotion-insights-2026-05-26",
+      "head_sha": "7805831a00c0ab295b1c6f2882d88907d00ed462",
+      "base_branch": "feature/2026-04-25-foundry-release-control-plane",
+      "commits": 1,
+      "created_at": "2026-05-26T12:45:15Z",
+      "classification": "current",
+      "content_type": "documentation",
+      "ci_status": "failure",
+      "ci_failure_reason": "Node toolchain (pnpm setup), not code"
+    }
+  ],
+  "worktrees": [
+    {
+      "path": "C:/Users/Cheex/AppData/Local/Temp/opencode/foundry",
+      "head_sha": "a1f506f3e6fe5d66ca83c722a6484cb735936fd0",
+      "branch": "feature/2026-04-25-foundry-release-control-plane",
+      "dirty": false
+    }
+  ],
+  "conflicts": [],
+  "ci": {
+    "workflow_file": ".github/workflows/ci.yml",
+    "push_trigger_branch": "main",
+    "push_trigger_effective": false,
+    "note": "CI triggers on push to main, but main does not exist. Push-triggered CI never fires. PR-triggered CI fires but all 5 runs failed at Node toolchain setup (pnpm/action-setup).",
+    "recent_runs": [
+      {"id": 26800698336, "name": "CI", "conclusion": "failure", "branch": "docs/2026-05-26-extraction-forensics-gate", "event": "pull_request"},
+      {"id": 26800471294, "name": "CI", "conclusion": "failure", "branch": "docs/2026-05-26-extraction-forensics-gate", "event": "pull_request"},
+      {"id": 26448797898, "name": "CI", "conclusion": "failure", "branch": "docs/sysadminsuite-mainline-promotion-insights-2026-05-26", "event": "pull_request"},
+      {"id": 26434110259, "name": "CI", "conclusion": "failure", "branch": "docs/2026-05-26-extraction-forensics-gate", "event": "pull_request"},
+      {"id": 25234805058, "name": "CI", "conclusion": "failure", "branch": "docs/2026-05-01-branch-naming-standard", "event": "pull_request"}
+    ],
+    "codeql_runs": [
+      {"id": 28773459935, "conclusion": "success", "branch": "feature/2026-04-25-foundry-release-control-plane", "event": "schedule"},
+      {"id": 28354606650, "conclusion": "success", "branch": "feature/2026-04-25-foundry-release-control-plane", "event": "schedule"},
+      {"id": 27935994881, "conclusion": "success", "branch": "feature/2026-04-25-foundry-release-control-plane", "event": "schedule"}
+    ]
+  },
+  "decision": {
+    "canonical_branch_recommendation": "create_main",
+    "rationale": "The feature branch has always been the only code branch. CI is configured for main but main does not exist. Creating main enables push-triggered CI and standardizes the default branch name.",
+    "mutation_steps": [
+      "git checkout -b main feature/2026-04-25-foundry-release-control-plane",
+      "git push -u origin main",
+      "gh repo edit EndeavorEverlasting/foundry --default-branch main",
+      "gh pr edit 1 --base main",
+      "gh pr edit 2 --base main",
+      "gh pr edit 3 --base main"
+    ],
+    "preservation_notes": "Do not delete the dated branch. Convert to tag or archive branch after PRs are merged."
+  }
+}
