@@ -1,153 +1,292 @@
 {
   "$schema": null,
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "foundry.repo-floor-snapshot",
-  "captured_at": "2026-07-12T17:28:00Z",
+  "snapshot_date": "2026-07-12",
+  "verified_at": "2026-07-13T08:45:34Z",
   "repository": {
     "owner": "EndeavorEverlasting",
     "name": "foundry",
-    "provider": "github"
+    "provider": "github",
+    "visibility": "public"
+  },
+  "proof_scope": {
+    "remote_repository_metadata": "verified",
+    "remote_pr_metadata_and_comparisons": "verified",
+    "remote_pr_comments": "verified",
+    "remote_ci_job_summaries": "verified",
+    "local_worktree_current_state": "unverified_this_run",
+    "feature_build_integration_runtime": "not_claimed"
   },
   "default_branch": {
     "name": "feature/2026-04-25-foundry-release-control-plane",
     "head_sha": "a1f506f3e6fe5d66ca83c722a6484cb735936fd0",
     "is_github_default": true,
-    "tracks_remote": "origin/feature/2026-04-25-foundry-release-control-plane"
+    "trunk_commit_count": 6,
+    "canonical_role": "temporary_source_ref"
   },
-  "main_branch": {
-    "exists": false,
-    "note": "No refs/heads/main or refs/remotes/origin/main exists. CI triggers on push to main but main does not exist."
-  },
-  "branches": [
+  "canonical_candidates": [
+    {
+      "name": "feature/2026-04-25-foundry-release-control-plane",
+      "state": "exists",
+      "sha": "a1f506f3e6fe5d66ca83c722a6484cb735936fd0",
+      "decision": "preserve_as_source_ref_not_permanent_canonical_name"
+    },
+    {
+      "name": "main",
+      "state": "absent",
+      "lookup_result": "compare_ref_404",
+      "decision": "create_from_selected_source_sha"
+    },
+    {
+      "name": "master",
+      "state": "absent",
+      "lookup_result": "compare_ref_404",
+      "decision": "reject"
+    }
+  ],
+  "observed_remote_refs": [
     {
       "name": "feature/2026-04-25-foundry-release-control-plane",
       "sha": "a1f506f3e6fe5d66ca83c722a6484cb735936fd0",
-      "role": "canonical",
-      "is_default": true,
-      "commit_count": 6,
-      "tracking": "origin/feature/2026-04-25-foundry-release-control-plane"
+      "source": "repository_default_branch"
     },
     {
       "name": "docs/2026-05-01-branch-naming-standard",
       "sha": "528ef732ebd82be79defa4d8fbaba7f3b0d4e974",
-      "role": "pr",
-      "pr_number": 1,
-      "commit_count": 4,
-      "base_branch": "feature/2026-04-25-foundry-release-control-plane",
-      "diverges_at": "1111a72"
+      "source": "pull_request_1_head"
     },
     {
       "name": "docs/2026-05-26-extraction-forensics-gate",
       "sha": "1333435324c9094309f6183a0c62c0017dbdf869",
-      "role": "pr",
-      "pr_number": 2,
-      "commit_count": 3,
-      "base_branch": "feature/2026-04-25-foundry-release-control-plane",
-      "diverges_at": "a1f506f"
+      "source": "pull_request_2_head"
     },
     {
       "name": "docs/sysadminsuite-mainline-promotion-insights-2026-05-26",
       "sha": "7805831a00c0ab295b1c6f2882d88907d00ed462",
-      "role": "pr",
-      "pr_number": 3,
-      "commit_count": 1,
-      "base_branch": "feature/2026-04-25-foundry-release-control-plane",
-      "diverges_at": "a1f506f"
+      "source": "pull_request_3_head"
+    },
+    {
+      "name": "docs/2026-07-12-canonical-branch-decision",
+      "sha": "46204e9d815d79933ffe16acf4032163960e213e",
+      "source": "pull_request_4_head_before_correction_commit"
     }
   ],
-  "commit_history": [
-    {"sha": "a1f506f", "message": "feat: integration tests and NodeWeaver governance classification", "date": "2026-04-25"},
-    {"sha": "1111a72", "message": "feat(hooks): add release policy manifest capabilities", "date": "2026-04-25"},
-    {"sha": "e6ac010", "message": "feat(web): add release readiness route and client wiring", "date": "2026-04-25"},
-    {"sha": "950fc30", "message": "docs(release): add divergence workflow guidance", "date": "2026-04-25"},
-    {"sha": "474f3e6", "message": "feat(api): add release readiness control plane and deploy action planning", "date": "2026-04-25"},
-    {"sha": "3e40cb9", "message": "chore(foundry): bootstrap local repository snapshot", "date": "2026-04-25"}
-  ],
+  "remote_ref_enumeration": {
+    "exhaustive": false,
+    "limitation": "The connector branch-search endpoint returned no results even for the exact default branch. Observed default and open-PR refs are recorded; local git branch -a -vv remains required."
+  },
+  "local_floor": {
+    "status": "unverified_this_run",
+    "prior_capture": {
+      "captured_at": "2026-07-12T17:28:00Z",
+      "path": "C:/Users/Cheex/AppData/Local/Temp/opencode/foundry",
+      "head_sha": "a1f506f3e6fe5d66ca83c722a6484cb735936fd0",
+      "branch": "feature/2026-04-25-foundry-release-control-plane",
+      "dirty": false,
+      "trust": "historical_observation_not_current_proof"
+    },
+    "current_attempt": {
+      "result": "blocked",
+      "reason": "Execution container could not resolve github.com while attempting a fresh clone."
+    },
+    "unverified_fields": [
+      "git_status",
+      "current_local_branch",
+      "local_branch_upstreams",
+      "local_worktrees",
+      "local_conflicts",
+      "merge_in_progress",
+      "rebase_in_progress",
+      "cherry_pick_in_progress"
+    ]
+  },
   "pull_requests": [
     {
       "number": 1,
       "title": "docs: enforce dated branch naming standard",
       "state": "OPEN",
-      "mergeable": "MERGEABLE",
+      "mergeable": true,
       "head_branch": "docs/2026-05-01-branch-naming-standard",
       "head_sha": "528ef732ebd82be79defa4d8fbaba7f3b0d4e974",
       "base_branch": "feature/2026-04-25-foundry-release-control-plane",
-      "commits": 4,
-      "created_at": "2026-05-01T21:53:40Z",
-      "classification": "current",
-      "content_type": "documentation",
-      "ci_status": "failure",
-      "ci_failure_reason": "Node toolchain (pnpm setup), not code"
+      "comparison": {
+        "status": "diverged",
+        "ahead_by": 4,
+        "behind_by": 1,
+        "merge_base_sha": "1111a7255d77db8538db5b79e475e1a3b38c8f49"
+      },
+      "classification": "replayable",
+      "merge_gate": "owner_review_and_validation_required",
+      "content_type": "documentation_code_and_tests",
+      "changed_files": [
+        "docs/branch-naming-standard.md",
+        "packages/foundry-policy/src/foundry_policy/__init__.py",
+        "packages/foundry-policy/src/foundry_policy/branch_naming.py",
+        "packages/foundry-policy/tests/test_branch_naming.py"
+      ],
+      "preservation": {
+        "commit_count": 4,
+        "keep_branch": true,
+        "keep_pr_open": true,
+        "keep_comments": true,
+        "tests_present": true,
+        "review_note": "CodeRabbit recorded a docstring-coverage warning."
+      },
+      "ci": {
+        "run_id": 25234805058,
+        "conclusion": "failure",
+        "docker_smoke": "success",
+        "import_boundaries": "success",
+        "python": "failure_at_ruff_mypy_and_pytest_skipped",
+        "node": "failure_at_pnpm_setup_remaining_steps_skipped"
+      }
     },
     {
       "number": 2,
       "title": "Docs: Add extraction forensics gate doctrine",
       "state": "OPEN",
-      "mergeable": "MERGEABLE",
+      "mergeable": true,
       "head_branch": "docs/2026-05-26-extraction-forensics-gate",
       "head_sha": "1333435324c9094309f6183a0c62c0017dbdf869",
       "base_branch": "feature/2026-04-25-foundry-release-control-plane",
-      "commits": 3,
-      "created_at": "2026-05-26T05:27:44Z",
+      "comparison": {
+        "status": "ahead",
+        "ahead_by": 3,
+        "behind_by": 0,
+        "merge_base_sha": "a1f506f3e6fe5d66ca83c722a6484cb735936fd0"
+      },
       "classification": "current",
+      "merge_gate": "blocked_by_unresolved_ci",
       "content_type": "documentation",
-      "ci_status": "failure",
-      "ci_failure_reason": "Node toolchain (pnpm setup), not code"
+      "changed_files": [
+        "docs/AGENT_SPRINT_CONTRACT.md",
+        "docs/EXTRACTION_FORENSICS_GATE.md",
+        "docs/PROOF_ARTIFACT_CONTRACT.md"
+      ],
+      "preservation": {
+        "commit_count": 3,
+        "keep_branch": true,
+        "keep_pr_open": true,
+        "keep_comments": true,
+        "doctrine_present": true,
+        "review_note": "CodeRabbit reported all five pre-merge review checks passed."
+      },
+      "ci": {
+        "run_id": 26800698336,
+        "conclusion": "failure",
+        "docker_smoke": "success",
+        "import_boundaries": "success",
+        "python": "failure_at_ruff_mypy_and_pytest_skipped",
+        "node": "failure_at_pnpm_setup_remaining_steps_skipped"
+      }
     },
     {
       "number": 3,
       "title": "Add SysAdminSuite mainline promotion insights",
       "state": "OPEN",
-      "mergeable": "MERGEABLE",
+      "mergeable": true,
       "head_branch": "docs/sysadminsuite-mainline-promotion-insights-2026-05-26",
       "head_sha": "7805831a00c0ab295b1c6f2882d88907d00ed462",
       "base_branch": "feature/2026-04-25-foundry-release-control-plane",
-      "commits": 1,
-      "created_at": "2026-05-26T12:45:15Z",
+      "comparison": {
+        "status": "ahead",
+        "ahead_by": 1,
+        "behind_by": 0,
+        "merge_base_sha": "a1f506f3e6fe5d66ca83c722a6484cb735936fd0"
+      },
       "classification": "current",
+      "merge_gate": "blocked_by_unresolved_ci",
       "content_type": "documentation",
-      "ci_status": "failure",
-      "ci_failure_reason": "Node toolchain (pnpm setup), not code"
+      "changed_files": [
+        "docs/insights/sysadminsuite-mainline-promotion-2026-05-26.md"
+      ],
+      "preservation": {
+        "commit_count": 1,
+        "keep_branch": true,
+        "keep_pr_open": true,
+        "keep_comments": true,
+        "doctrine_present": true,
+        "review_note": "CodeRabbit reported no actionable comments."
+      },
+      "ci": {
+        "run_id": 26448797898,
+        "conclusion": "failure",
+        "docker_smoke": "failure_during_job_setup",
+        "import_boundaries": "success",
+        "python": "failure_at_ruff_mypy_and_pytest_skipped",
+        "node": "failure_at_pnpm_setup_remaining_steps_skipped"
+      }
     }
   ],
-  "worktrees": [
-    {
-      "path": "C:/Users/Cheex/AppData/Local/Temp/opencode/foundry",
-      "head_sha": "a1f506f3e6fe5d66ca83c722a6484cb735936fd0",
-      "branch": "feature/2026-04-25-foundry-release-control-plane",
-      "dirty": false
-    }
-  ],
-  "conflicts": [],
   "ci": {
     "workflow_file": ".github/workflows/ci.yml",
-    "push_trigger_branch": "main",
-    "push_trigger_effective": false,
-    "note": "CI triggers on push to main, but main does not exist. Push-triggered CI never fires. PR-triggered CI fires but all 5 runs failed at Node toolchain setup (pnpm/action-setup).",
-    "recent_runs": [
-      {"id": 26800698336, "name": "CI", "conclusion": "failure", "branch": "docs/2026-05-26-extraction-forensics-gate", "event": "pull_request"},
-      {"id": 26800471294, "name": "CI", "conclusion": "failure", "branch": "docs/2026-05-26-extraction-forensics-gate", "event": "pull_request"},
-      {"id": 26448797898, "name": "CI", "conclusion": "failure", "branch": "docs/sysadminsuite-mainline-promotion-insights-2026-05-26", "event": "pull_request"},
-      {"id": 26434110259, "name": "CI", "conclusion": "failure", "branch": "docs/2026-05-26-extraction-forensics-gate", "event": "pull_request"},
-      {"id": 25234805058, "name": "CI", "conclusion": "failure", "branch": "docs/2026-05-01-branch-naming-standard", "event": "pull_request"}
+    "push_trigger_branches": [
+      "main"
     ],
-    "codeql_runs": [
-      {"id": 28773459935, "conclusion": "success", "branch": "feature/2026-04-25-foundry-release-control-plane", "event": "schedule"},
-      {"id": 28354606650, "conclusion": "success", "branch": "feature/2026-04-25-foundry-release-control-plane", "event": "schedule"},
-      {"id": 27935994881, "conclusion": "success", "branch": "feature/2026-04-25-foundry-release-control-plane", "event": "schedule"}
-    ]
+    "pull_request_trigger": true,
+    "push_trigger_effective_for_current_default": false,
+    "current_decision_pr": {
+      "number": 4,
+      "run_id": 29209825531,
+      "conclusion": "failure",
+      "docker_smoke": "success",
+      "import_boundaries": "success",
+      "python": "failure_at_ruff_mypy_and_pytest_skipped",
+      "node": "failure_at_pnpm_setup_remaining_steps_skipped"
+    },
+    "causality_claim": "not_made"
   },
   "decision": {
-    "canonical_branch_recommendation": "create_main",
-    "rationale": "The feature branch has always been the only code branch. CI is configured for main but main does not exist. Creating main enables push-triggered CI and standardizes the default branch name.",
-    "mutation_steps": [
-      "git checkout -b main feature/2026-04-25-foundry-release-control-plane",
-      "git push -u origin main",
-      "gh repo edit EndeavorEverlasting/foundry --default-branch main",
-      "gh pr edit 1 --base main",
-      "gh pr edit 2 --base main",
-      "gh pr edit 3 --base main"
+    "canonical_branch_recommendation": "create_main_from_proven_commit",
+    "source_branch": "feature/2026-04-25-foundry-release-control-plane",
+    "source_sha": "a1f506f3e6fe5d66ca83c722a6484cb735936fd0",
+    "change_github_default_now": false,
+    "gates": [
+      "reprove_local_floor",
+      "confirm_source_sha_unchanged",
+      "create_main_without_moving_existing_refs",
+      "verify_origin_main_equals_source_sha",
+      "record_validation_results"
     ],
-    "preservation_notes": "Do not delete the dated branch. Convert to tag or archive branch after PRs are merged."
-  }
+    "next_mutation_command": "git push origin a1f506f3e6fe5d66ca83c722a6484cb735936fd0:refs/heads/main",
+    "destructive_cleanup_authorized": false
+  },
+  "validation": {
+    "artifact_json_parse": "passed",
+    "artifact_only_git_diff_check": "passed",
+    "repository_git_diff_check": "not_run_no_local_clone",
+    "repository_status": "not_run_no_local_clone",
+    "repository_diff_stat": "not_run_no_local_clone",
+    "repository_diff": "not_run_no_local_clone",
+    "package_and_docs_checks": "not_run_no_local_clone",
+    "artifact_only_git_status": "two_modified_expected_paths",
+    "artifact_only_git_diff_stat": "two_files_changed",
+    "artifact_only_git_diff_review": "completed"
+  },
+  "required_later_commands": [
+    "git fetch origin --prune",
+    "git status --short",
+    "git branch --show-current",
+    "git log --oneline --decorate -8",
+    "git worktree list --porcelain",
+    "git branch -a -vv",
+    "git diff --name-only --diff-filter=U",
+    "git diff --check",
+    "git diff --stat",
+    "git diff",
+    "python -m json.tool docs/operations/foundry-repo-floor-20260712.json",
+    "uv run ruff check .",
+    "uv run mypy packages/foundry-core/src packages/foundry-analysis/src packages/foundry-git/src packages/foundry-hooks-sdk/python/src apps/foundry-api/src apps/foundry-worker/src",
+    "uv run pytest -q",
+    "pnpm install --frozen-lockfile",
+    "pnpm -r lint",
+    "pnpm -r typecheck",
+    "pnpm -r test --if-present",
+    "pnpm -r build",
+    "python scripts/check_import_boundaries.py",
+    "docker build -f infra/docker/api.Dockerfile .",
+    "docker build -f infra/docker/worker.Dockerfile .",
+    "docker build -f infra/docker/web.Dockerfile ."
+  ]
 }
