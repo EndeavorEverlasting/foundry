@@ -1,0 +1,40 @@
+{
+  "schema": "FoundryDelegationFixtureContract.v1",
+  "name": "Foundry Delegation Fixture Contract",
+  "taskAssessment": {
+    "taskId": "task-blacksmithguild-routing",
+    "complexity": "medium",
+    "requiredCapabilities": [
+      "capability:skill-routing-validation"
+    ],
+    "riskLevel": "static",
+    "authorized": true
+  },
+  "mergeabilityAssessment": {
+    "conflicts": [],
+    "isMergeable": true,
+    "unresolvedReviewThreads": 0,
+    "checksPassed": true,
+    "behindCommitCount": 0
+  },
+  "delegationDecision": {
+    "action": "delegate_to_worker",
+    "targetExecutor": "AgentSwitchboard",
+    "profile": "ada-mechanical-profile",
+    "approved": true,
+    "tokenCap": 500000
+  },
+  "estimatedVersusObservedOutcome": {
+    "estimated": {
+      "durationSeconds": 180,
+      "filesChanged": 2,
+      "success": true
+    },
+    "observed": {
+      "durationSeconds": 145,
+      "filesChanged": 2,
+      "success": true,
+      "completedAt": "2026-07-14T09:44:00Z"
+    }
+  }
+}
